@@ -31,22 +31,23 @@ jobs:
           unzip -q /tmp/gradle.zip -d /tmp/
           echo "/tmp/gradle-8.5/bin" >> $GITHUB_PATH
 
-      - name: Build APK
-        id: build
+      - name: Build
         run: |
-          cd $GITHUB_WORKSPACE
-          /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
+          echo "WORKDIR: $(pwd)"
+          echo "Contents: $(ls)"
+          ls app/
+          /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace
 
-      - name: Debug - list output files
+      - name: Debug files
         run: |
-          find $GITHUB_WORKSPACE/app/build -name "*.apk" -o -name "*.aab" 2>/dev/null | head -20 || echo "No APK found"
-          ls -laR $GITHUB_WORKSPACE/app/build/outputs/ 2>/dev/null | head -50 || echo "No outputs dir"
+          echo "=== BUILD OUTPUTS ==="
+          find app/build -type f 2>/dev/null | head -30 || echo "NO FILES FOUND"
+          echo "=== APK FILES ==="
+          find . -name "*.apk" 2>/dev/null | head -10 || echo "NO APK"
 
-      - name: Upload APK
-        if: success()
+      - name: Upload whole build dir
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: EyeProtect-App
-          path: |
-            app/build/outputs/**/*.apk
-            app/build/outputs/**/*.aab
+          name: build-outputs
+          path: app/build/
