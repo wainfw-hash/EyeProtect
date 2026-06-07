@@ -28,8 +28,7 @@ fun MainScreen(
     onModeChange: (TimerMode) -> Unit,
     onWorkDurationChange: (Int) -> Unit,
     onRestDurationChange: (Int) -> Unit,
-    onStartStop: () -> Unit,
-    onEnableDeviceAdmin: () -> Unit
+    onStartStop: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -55,31 +54,6 @@ fun MainScreen(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // 设备管理员权限提示
-            if (!uiState.isDeviceAdminActive) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer
-                    )
-                ) {
-                    Row(
-                        modifier = Modifier.padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "需要开启设备管理权限才能锁屏",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.weight(1f)
-                        )
-                        TextButton(onClick = onEnableDeviceAdmin) {
-                            Text("去设置")
-                        }
-                    }
-                }
-                Spacer(Modifier.height(12.dp))
-            }
-
             // 今日统计卡片
             Card(
                 modifier = Modifier.fillMaxWidth(),

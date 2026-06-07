@@ -63,17 +63,9 @@ class MainActivity : ComponentActivity() {
                             if (uiState.isRunning) {
                                 viewModel.stopTimer()
                             } else {
-                                val ok = viewModel.startTimer()
-                                if (!ok) {
-                                    android.widget.Toast.makeText(
-                                        this@MainActivity,
-                                        "请先开启设备管理权限：设置 → 安全 → 设备管理器 → 护眼锁屏",
-                                        android.widget.Toast.LENGTH_LONG
-                                    ).show()
-                                }
+                                viewModel.startTimer()
                             }
-                        },
-                        onEnableDeviceAdmin = { openDeviceAdminSettings(this@MainActivity) }
+                        }
                     )
 
                     // 锁屏遮罩覆盖层
