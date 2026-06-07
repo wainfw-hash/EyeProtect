@@ -21,33 +21,24 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install required SDK components
-        run: |
-          yes | sdkmanager "platforms;android-34" "build-tools;34.0.0" 2>&1 | tail -5
+      - name: Install SDK
+        run: yes | sdkmanager "platforms;android-34" "build-tools;34.0.0" > /dev/null 2>&1
 
-      - name: Download & install Gradle
+      - name: Download Gradle
         run: |
           curl -fsSL -o /tmp/gradle.zip "https://services.gradle.org/distributions/gradle-8.5-bin.zip"
           unzip -q /tmp/gradle.zip -d /tmp/
           echo "/tmp/gradle-8.5/bin" >> $GITHUB_PATH
 
       - name: Build
-        run: |
-          echo "WORKDIR: $(pwd)"
-          echo "Contents: $(ls)"
-          ls app/
-          /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace
+        run: /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace
 
-      - name: Debug files
-        run: |
-          echo "=== BUILD OUTPUTS ==="
-          find app/build -type f 2>/dev/null | head -30 || echo "NO FILES FOUND"
-          echo "=== APK FILES ==="
-          find . -name "*.apk" 2>/dev/null | head -10 || echo "NO APK"
+      - name: Find APK
+        run: find . -name "*.apk" -type f 2>/dev/null
 
-      - name: Upload whole build dir
-        if: always()
+      - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: build-outputs
-          path: app/build/
+          name: EyeProtect-App
+          path: app/build/outputs
