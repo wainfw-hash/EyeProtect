@@ -21,29 +21,16 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Download Gradle
+      - name: Download & install Gradle
         run: |
-          echo "Downloading Gradle..."
           curl -fsSL -o /tmp/gradle.zip "https://services.gradle.org/distributions/gradle-8.5-bin.zip"
-          echo "Downloaded: $(ls -lh /tmp/gradle.zip | awk '{print $5}')"
-          echo "Unzipping..."
           unzip -q /tmp/gradle.zip -d /tmp/
-          ls -d /tmp/gradle-8.5
           echo "/tmp/gradle-8.5/bin" >> $GITHUB_PATH
-          echo "Gradle ready: $(/tmp/gradle-8.5/bin/gradle --version | head -1)"
 
-      - name: Generate wrapper
+      - name: Build APK with Gradle
         run: |
           cd $GITHUB_WORKSPACE
-          /tmp/gradle-8.5/bin/gradle wrapper --gradle-version 8.5
-          ls -la gradlew gradle/wrapper/gradle-wrapper.jar
-          echo "Wrapper generated OK"
-
-      - name: Build APK
-        run: |
-          cd $GITHUB_WORKSPACE
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
