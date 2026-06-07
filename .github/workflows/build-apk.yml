@@ -21,24 +21,23 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install SDK
-        run: yes | sdkmanager "platforms;android-34" "build-tools;34.0.0" > /dev/null 2>&1
+      - name: Install required SDK components
+        run: |
+          yes | sdkmanager "platforms;android-34" "build-tools;34.0.0" 2>&1 | tail -5
 
-      - name: Download Gradle
+      - name: Download & install Gradle
         run: |
           curl -fsSL -o /tmp/gradle.zip "https://services.gradle.org/distributions/gradle-8.5-bin.zip"
           unzip -q /tmp/gradle.zip -d /tmp/
           echo "/tmp/gradle-8.5/bin" >> $GITHUB_PATH
 
-      - name: Build
-        run: /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace
-
-      - name: Find APK
-        run: find . -name "*.apk" -type f 2>/dev/null
+      - name: Build APK
+        run: |
+          cd $GITHUB_WORKSPACE
+          /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
 
       - name: Upload APK
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: EyeProtect-App
-          path: app/build/outputs
+          path: app/build/outputs/
