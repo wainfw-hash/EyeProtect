@@ -35,7 +35,7 @@ jobs:
       - name: Generate wrapper
         run: |
           cd $GITHUB_WORKSPACE
-          gradle wrapper --gradle-version 8.5
+          /tmp/gradle-8.5/bin/gradle wrapper --gradle-version 8.5
           ls -la gradlew gradle/wrapper/gradle-wrapper.jar
           echo "Wrapper generated OK"
 
