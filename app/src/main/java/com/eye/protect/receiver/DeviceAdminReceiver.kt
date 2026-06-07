@@ -20,18 +20,27 @@ class DeviceAdminReceiver : DeviceAdminReceiver() {
 
     companion object {
         fun getComponentName(context: Context): ComponentName {
-            return ComponentName(context.applicationContext, DeviceAdminReceiver::class.java)
+            return ComponentName(context, DeviceAdminReceiver::class.java)
         }
 
         fun isActive(context: Context): Boolean {
-            val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            return dpm.isAdminActive(getComponentName(context))
+            return try {
+                val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                dpm.isAdminActive(getComponentName(context))
+            } catch (_: Exception) {
+                false
+            }
         }
 
         fun lockNow(context: Context) {
-            val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            if (dpm.isAdminActive(getComponentName(context))) {
+            try {
+                val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
                 dpm.lockNow()
+                android.util.Log.d("DeviceAdmin", "lockNow() called successfully")
+            } catch (e: SecurityException) {
+                android.util.Log.e("DeviceAdmin", "lockNow() failed - no admin permission", e)
+            } catch (e: Exception) {
+                android.util.Log.e("DeviceAdmin", "lockNow() failed", e)
             }
         }
     }

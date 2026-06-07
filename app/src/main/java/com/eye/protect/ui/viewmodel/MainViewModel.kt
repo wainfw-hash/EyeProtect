@@ -97,13 +97,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun startTimer(): Boolean {
-        val state = _uiState.value
-        if (!state.isDeviceAdminActive) {
-            _uiState.update { it.copy(isDeviceAdminActive = false) } // force refresh
-            checkDeviceAdmin()
+        // 直接从系统读取最新状态，不依赖缓存
+        val sysActive = DeviceAdminReceiver.isActive(getApplication())
+        _uiState.update { it.copy(isDeviceAdminActive = sysActive) }
+        if (!sysActive) {
             return false
         }
 
+        val state = _uiState.value
         _uiState.update { it.copy(isRunning = true) }
 
         TimerService.onTickCallback = { seconds ->
