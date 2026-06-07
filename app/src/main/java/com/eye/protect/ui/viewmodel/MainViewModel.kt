@@ -96,9 +96,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun startTimer() {
+    fun startTimer(): Boolean {
         val state = _uiState.value
-        if (!state.isDeviceAdminActive) return
+        if (!state.isDeviceAdminActive) {
+            _uiState.update { it.copy(isDeviceAdminActive = false) } // force refresh
+            checkDeviceAdmin()
+            return false
+        }
 
         _uiState.update { it.copy(isRunning = true) }
 
@@ -122,6 +126,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             state.restDuration,
             state.countdownSeconds
         )
+        return true
     }
 
     fun stopTimer() {

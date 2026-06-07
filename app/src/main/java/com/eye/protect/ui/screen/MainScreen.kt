@@ -174,8 +174,7 @@ fun MainScreen(
                         MaterialTheme.colorScheme.error
                     else
                         MaterialTheme.colorScheme.primary
-                ),
-                enabled = uiState.isDeviceAdminActive
+                )
             ) {
                 Icon(
                     imageVector = if (uiState.isRunning) Icons.Default.Stop else Icons.Default.PlayArrow,

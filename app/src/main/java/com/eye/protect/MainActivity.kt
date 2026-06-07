@@ -63,7 +63,14 @@ class MainActivity : ComponentActivity() {
                             if (uiState.isRunning) {
                                 viewModel.stopTimer()
                             } else {
-                                viewModel.startTimer()
+                                val ok = viewModel.startTimer()
+                                if (!ok) {
+                                    android.widget.Toast.makeText(
+                                        this@MainActivity,
+                                        "请先开启设备管理权限：设置 → 安全 → 设备管理器 → 护眼锁屏",
+                                        android.widget.Toast.LENGTH_LONG
+                                    ).show()
+                                }
                             }
                         },
                         onEnableDeviceAdmin = { openDeviceAdminSettings(this@MainActivity) }
@@ -89,27 +96,31 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openDeviceAdminSettings(context: Context) {
-        try {
-            val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
-                putExtra(
-                    DevicePolicyManager.EXTRA_DEVICE_ADMIN,
-                    DeviceAdminReceiver.getComponentName(context)
-                )
-                putExtra(
-                    DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                    context.getString(R.string.device_admin_explanation)
-                )
-            }
+        // 先尝试直接跳设备管理授权页
+        val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
+            putExtra(
+                DevicePolicyManager.EXTRA_DEVICE_ADMIN,
+                DeviceAdminReceiver.getComponentName(context)
+            )
+            putExtra(
+                DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                context.getString(R.string.device_admin_explanation)
+            )
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)
-        } catch (e: Exception) {
-            // 如果系统不支持直接跳转，回退到安全设置页面
-            try {
-                val fallback = Intent(android.provider.Settings.ACTION_SECURITY_SETTINGS)
+        } else {
+            // 回退：打开安全设置首页
+            val fallback = Intent(android.provider.Settings.ACTION_SECURITY_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            if (fallback.resolveActivity(context.packageManager) != null) {
                 context.startActivity(fallback)
-            } catch (_: Exception) {
+            } else {
                 android.widget.Toast.makeText(
                     context,
-                    "请手动前往：设置 → 安全 → 设备管理 → 开启护眼锁屏",
+                    "请手动前往：设置 → 安全 → 设备管理器 → 开启「护眼锁屏」",
                     android.widget.Toast.LENGTH_LONG
                 ).show()
             }
