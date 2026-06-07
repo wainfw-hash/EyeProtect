@@ -33,11 +33,20 @@ jobs:
 
       - name: Build APK
         run: |
-          cd $GITHUB_WORKSPACE
-          /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
+          echo "PWD: $(pwd)"
+          echo "FILES: $(ls -la)"
+          /tmp/gradle-8.5/bin/gradle :app:assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: EyeProtect-App
-          path: app/build/outputs/
+          path: app/build/
