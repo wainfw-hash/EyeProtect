@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">护眼锁屏</string>
+    <string name="timer_channel_name">护眼计时</string>
+    <string name="timer_channel_desc">显示锁屏倒计时状态</string>
+    <string name="notification_timer_title">🔒 护眼锁屏</string>
+    <string name="notification_stop">停止</string>
+    <string name="start">开始</string>
+    <string name="stop">停止</string>
+    <string name="timer_mode">倒计时</string>
+    <string name="cycle_mode">循环定时</string>
+    <string name="work_duration">工作时长</string>
+    <string name="rest_duration">休息时长</string>
+    <string name="minutes_format">%d 分钟</string>
+    <string name="today_locks">今日已锁屏 %d 次</string>
+    <string name="today_work">累计工作 %d 分钟</string>
+    <string name="time_to_rest">该休息啦！</string>
+    <string name="seconds_to_lock">%d 秒后锁屏</string>
+    <string name="device_admin_explanation">用于执行系统锁屏操作</string>
+    <string name="enable_device_admin">开启设备管理权限</string>
+    <string name="enable_device_admin_desc">需要开启设备管理权限才能执行锁屏功能</string>
+    <string name="goto_settings">前往设置</string>
+</resources>
