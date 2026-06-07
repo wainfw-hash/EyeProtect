@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModelProvider
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.eye.protect.model.TimerMode
@@ -31,6 +33,18 @@ class MainActivity : ComponentActivity() {
                 val viewModel: MainViewModel = viewModel()
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
                 var showLockOverlay by remember { mutableStateOf(false) }
+
+                // 每次从设置页返回时，刷新设备管理员状态
+                val lifecycleOwner = LocalLifecycleOwner.current
+                DisposableEffect(lifecycleOwner) {
+                    val observer = LifecycleEventObserver { _, event ->
+                        if (event == Lifecycle.Event.ON_RESUME) {
+                            viewModel.checkDeviceAdmin()
+                        }
+                    }
+                    lifecycleOwner.lifecycle.addObserver(observer)
+                    onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+                }
 
                 // 监听 TimerService 工作结束回调 — 显示锁屏遮罩
                 LaunchedEffect(Unit) {
@@ -72,13 +86,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // 每次回到前台刷新设备管理员状态
-        val viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.checkDeviceAdmin()
     }
 
     private fun openDeviceAdminSettings(context: Context) {
