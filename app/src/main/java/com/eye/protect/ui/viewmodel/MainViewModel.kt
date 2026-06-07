@@ -103,7 +103,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _uiState.update { it.copy(isRunning = true) }
 
         TimerService.onTickCallback = { seconds ->
-            _uiState.update { it.copy(remainingSeconds = seconds) }
+            _uiState.update { it.copy(remainingSeconds = seconds.toInt()) }
         }
         TimerService.onWorkTimeUpCallback = { mode ->
             _uiState.update { it.copy(isRunning = false) }
