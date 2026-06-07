@@ -33,26 +33,12 @@ jobs:
 
       - name: Build APK
         run: |
+          set -o pipefail
           cd $GITHUB_WORKSPACE
           /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
 
-      - name: Show build log
-        if: always()
-        run: |
-          echo "### Build log contents" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          cat build.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "### Directory structure" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          find app/build -type f 2>/dev/null || echo "No build output" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-
       - name: Upload APK
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: EyeProtect-App
-          path: |
-            **/*.apk
-            **/*.aab
+          path: app/build/outputs/apk/debug/app-debug.apk
