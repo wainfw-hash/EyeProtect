@@ -82,16 +82,30 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openDeviceAdminSettings(context: Context) {
-        val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
-            putExtra(
-                DevicePolicyManager.EXTRA_DEVICE_ADMIN,
-                DeviceAdminReceiver.getComponentName(context)
-            )
-            putExtra(
-                DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                context.getString(R.string.device_admin_explanation)
-            )
+        try {
+            val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
+                putExtra(
+                    DevicePolicyManager.EXTRA_DEVICE_ADMIN,
+                    DeviceAdminReceiver.getComponentName(context)
+                )
+                putExtra(
+                    DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                    context.getString(R.string.device_admin_explanation)
+                )
+            }
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            // 如果系统不支持直接跳转，回退到安全设置页面
+            try {
+                val fallback = Intent(android.provider.Settings.ACTION_SECURITY_SETTINGS)
+                context.startActivity(fallback)
+            } catch (_: Exception) {
+                android.widget.Toast.makeText(
+                    context,
+                    "请手动前往：设置 → 安全 → 设备管理 → 开启护眼锁屏",
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
+            }
         }
-        context.startActivity(intent)
     }
 }
