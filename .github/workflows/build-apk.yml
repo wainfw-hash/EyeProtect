@@ -24,18 +24,28 @@ jobs:
           unzip -q /tmp/gradle.zip -d /tmp/
           echo "/tmp/gradle-8.5/bin" >> $GITHUB_PATH
 
-      - name: Setup Gradle wrapper
+      - name: Setup wrapper
         run: |
           cd $GITHUB_WORKSPACE
           gradle wrapper --gradle-version 8.5
 
-      - name: Build APK
+      - name: Build
         run: |
           cd $GITHUB_WORKSPACE
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
+          echo "EXIT_CODE=$?"
+
+      - name: Upload build log (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          overwrite: true
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: EyeProtect-App
