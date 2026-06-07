@@ -33,15 +33,10 @@ jobs:
 
       - name: Build APK
         run: |
-          echo "::notice title=PWD::$(pwd)"
-          test -f settings.gradle.kts && echo "::notice title=settings.gradle.kts::OK" || echo "::error title=settings.gradle.kts::MISSING"
-          /tmp/gradle-8.5/bin/gradle :app:assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log; EXIT_CODE=${PIPESTATUS[0]}
-          echo "::notice title=Gradle exit code::$EXIT_CODE"
-          ls app/build/outputs/apk/debug/ 2>/dev/null || echo "::warning title=No APK output::path not found"
-          find . -name "*.apk" 2>/dev/null | head -5 | while read f; do echo "::notice title=APK::$f"; done
-          exit $EXIT_CODE
+          cd $GITHUB_WORKSPACE
+          /tmp/gradle-8.5/bin/gradle assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
 
-      - name: Upload build log
+      - name: Upload build log (always)
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -53,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: EyeProtect-App
-          path: app/build/outputs/
+          path: app/build/outputs/apk/**/*.apk

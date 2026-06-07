@@ -1,0 +1,129 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 79939370882,
+      "run_id": 27085609894,
+      "workflow_name": "Build APK",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/wainfw-hash/EyeProtect/actions/runs/27085609894",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOSzTfZc8AAAASnMH_gg",
+      "head_sha": "161e5dafe664abaa96f97c81615e58022f50e166",
+      "url": "https://api.github.com/repos/wainfw-hash/EyeProtect/actions/jobs/79939370882",
+      "html_url": "https://github.com/wainfw-hash/EyeProtect/actions/runs/27085609894/job/79939370882",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-06-07T07:02:42Z",
+      "started_at": "2026-06-07T07:02:44Z",
+      "completed_at": "2026-06-07T07:03:31Z",
+      "name": "build",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-06-07T07:02:45Z",
+          "completed_at": "2026-06-07T07:02:46Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-06-07T07:02:46Z",
+          "completed_at": "2026-06-07T07:02:47Z"
+        },
+        {
+          "name": "Setup JDK 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-06-07T07:02:47Z",
+          "completed_at": "2026-06-07T07:02:48Z"
+        },
+        {
+          "name": "Setup Android SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-06-07T07:02:48Z",
+          "completed_at": "2026-06-07T07:03:06Z"
+        },
+        {
+          "name": "Install required SDK components",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-06-07T07:03:06Z",
+          "completed_at": "2026-06-07T07:03:08Z"
+        },
+        {
+          "name": "Download & install Gradle",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-06-07T07:03:08Z",
+          "completed_at": "2026-06-07T07:03:10Z"
+        },
+        {
+          "name": "Build APK",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7,
+          "started_at": "2026-06-07T07:03:10Z",
+          "completed_at": "2026-06-07T07:03:29Z"
+        },
+        {
+          "name": "Upload build log",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-06-07T07:03:29Z",
+          "completed_at": "2026-06-07T07:03:29Z"
+        },
+        {
+          "name": "Upload APK",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-06-07T07:03:29Z",
+          "completed_at": "2026-06-07T07:03:29Z"
+        },
+        {
+          "name": "Post Setup JDK 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-06-07T07:03:29Z",
+          "completed_at": "2026-06-07T07:03:30Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-06-07T07:03:30Z",
+          "completed_at": "2026-06-07T07:03:30Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-06-07T07:03:30Z",
+          "completed_at": "2026-06-07T07:03:30Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/wainfw-hash/EyeProtect/check-runs/79939370882",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000016,
+      "runner_name": "GitHub Actions 1000000016",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
