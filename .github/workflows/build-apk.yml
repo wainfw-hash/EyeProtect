@@ -33,8 +33,15 @@ jobs:
 
       - name: Build APK
         run: |
-          echo "PWD: $(pwd)"
-          echo "FILES: $(ls -la)"
+          echo "=== WORKING DIR ==="
+          pwd
+          echo "=== ROOT FILES ==="
+          ls -la
+          echo "=== IS SETTINGS FILE THERE? ==="
+          test -f settings.gradle.kts && echo "YES" || echo "NO"
+          echo "=== GRADLE PROJECTS ==="
+          /tmp/gradle-8.5/bin/gradle projects --no-daemon 2>&1 | tail -20
+          echo "=== BUILDING APK ==="
           /tmp/gradle-8.5/bin/gradle :app:assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
 
       - name: Upload build log
@@ -49,4 +56,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: EyeProtect-App
-          path: app/build/
+          path: app/build/outputs/
