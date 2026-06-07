@@ -132,8 +132,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun onTimerFinished() {
-        DeviceAdminReceiver.lockNow(getApplication())
+    fun recordLock() {
+        val state = _uiState.value
+        viewModelScope.launch {
+            statRepository.recordLock(
+                workDuration = state.workDuration,
+                mode = state.mode.name
+            )
+        }
     }
 
     fun restartTimer() {
