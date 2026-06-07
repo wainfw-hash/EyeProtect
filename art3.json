@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 7461671338,
+      "node_id": "MDg6QXJ0aWZhY3Q3NDYxNjcxMzM4",
+      "name": "build-log",
+      "size_in_bytes": 2658,
+      "url": "https://api.github.com/repos/wainfw-hash/EyeProtect/actions/artifacts/7461671338",
+      "archive_download_url": "https://api.github.com/repos/wainfw-hash/EyeProtect/actions/artifacts/7461671338/zip",
+      "expired": false,
+      "digest": "sha256:e5cd3a575bb7433c12068e14d84cc546f471f0943cce80c5796eb323677cdb3d",
+      "created_at": "2026-06-07T06:59:41Z",
+      "updated_at": "2026-06-07T06:59:41Z",
+      "expires_at": "2026-09-05T06:58:45Z",
+      "workflow_run": {
+        "id": 27085525593,
+        "repository_id": 1261756261,
+        "head_repository_id": 1261756261,
+        "head_branch": "main",
+        "head_sha": "38325515ee882b19db7d89b135db819fe2579339"
+      }
+    }
+  ]
+}

@@ -33,16 +33,13 @@ jobs:
 
       - name: Build APK
         run: |
-          echo "=== WORKING DIR ==="
-          pwd
-          echo "=== ROOT FILES ==="
-          ls -la
-          echo "=== IS SETTINGS FILE THERE? ==="
-          test -f settings.gradle.kts && echo "YES" || echo "NO"
-          echo "=== GRADLE PROJECTS ==="
-          /tmp/gradle-8.5/bin/gradle projects --no-daemon 2>&1 | tail -20
-          echo "=== BUILDING APK ==="
-          /tmp/gradle-8.5/bin/gradle :app:assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
+          echo "::notice title=PWD::$(pwd)"
+          test -f settings.gradle.kts && echo "::notice title=settings.gradle.kts::OK" || echo "::error title=settings.gradle.kts::MISSING"
+          /tmp/gradle-8.5/bin/gradle :app:assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log; EXIT_CODE=${PIPESTATUS[0]}
+          echo "::notice title=Gradle exit code::$EXIT_CODE"
+          ls app/build/outputs/apk/debug/ 2>/dev/null || echo "::warning title=No APK output::path not found"
+          find . -name "*.apk" 2>/dev/null | head -5 | while read f; do echo "::notice title=APK::$f"; done
+          exit $EXIT_CODE
 
       - name: Upload build log
         if: always()
